@@ -136,32 +136,30 @@ class FicheControle(models.Model):
         for f in fiches:
             vehicule = f.vehicule_id
             km_actuel = vehicule.odometer or 0.0
-            km_alerts = [
-                ('pneus', f.interval_pneus_km),
-                ('vidange', f.interval_vidange_km),
-                ('chaine_distribution', f.interval_chaine_distribution_km),
-            ]
 
-            for alert_type, interval_km in km_alerts:
-                if not interval_km:
-                    continue
+            # -------- ALERTES KM --------
+            if f.interval_pneus_km and (km_actuel - f.km_derniere_maintenance) >= f.interval_pneus_km:
+                f._create_alert_and_activity(
+                    vehicule, 'pneus', today,
+                    f"ALERTE KM : Changement pneus requis ({vehicule.matricule})",
+                    cron_user.id
+                )
 
-                # Vérifier la dernière alerte de ce type traitée
-                last_alert = self.env['logifleet.alert'].search([
-                    ('vehicule_id', '=', vehicule.id),
-                    ('type', '=', alert_type),
-                    ('state', '=', 'done')
-                ], order='next_date desc', limit=1)
+            if f.interval_vidange_km and (km_actuel - f.km_derniere_vidange) >= f.interval_vidange_km:
+                f._create_alert_and_activity(
+                    vehicule, 'vidange', today,
+                    f"ALERTE KM : Vidange requise ({vehicule.matricule})",
+                    cron_user.id
+                )
 
-                km_last = last_alert.km_alert_done if last_alert else 0.0
-
-                # Créer une alerte si on a dépassé l'intervalle depuis la dernière alerte traitée
-                if (km_actuel - km_last) >= interval_km:
-                    f._create_alert_and_activity(
-                        vehicule, alert_type, today,
-                        f"ALERTE KM : {alert_type.replace('_', ' ').capitalize()} requise ({vehicule.matricule})",
-                        cron_user.id
-                    )
+            if f.interval_chaine_distribution_km and (
+                km_actuel - f.km_derniere_chaine_distribution
+            ) >= f.interval_chaine_distribution_km:
+                f._create_alert_and_activity(
+                    vehicule, 'chaine_distribution', today,
+                    f"ALERTE KM : Chaîne de distribution à vérifier ({vehicule.matricule})",
+                    cron_user.id
+                )
 
             # -------- ALERTES DATE --------
             date_alerts = [

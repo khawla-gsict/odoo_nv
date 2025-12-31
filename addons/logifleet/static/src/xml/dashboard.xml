@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="logifleet.Dashboard">
+        <div class="o_logifleet_dashboard">
+            <h2>LogiFleet – Tableau de bord</h2>
+
+            <div class="row">
+                <div class="col-3 card">
+                    <h4>Total véhicules</h4>
+                    <t t-esc="data.total_vehicules"/>
+                </div>
+                <div class="col-3 card">
+                    <h4>Disponibles</h4>
+                    <t t-esc="data.vehicules_dispo"/>
+                </div>
+                <div class="col-3 card">
+                    <h4>En mission</h4>
+                    <t t-esc="data.vehicules_mission"/>
+                </div>
+                <div class="col-3 card">
+                    <h4>En maintenance</h4>
+                    <t t-esc="data.vehicules_maintenance"/>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

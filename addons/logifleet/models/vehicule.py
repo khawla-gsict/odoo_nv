@@ -156,24 +156,26 @@ class Vehicule(models.Model):
     # NOUVELLE MÉTHODE ONCHANGE
     @api.onchange('modele_id')
     def _onchange_modele_id(self):
+        """ Déduit la marque et le type si un modèle est choisi """
         if self.modele_id:
-            self.marque_id = self.modele_id.marque_id.id
-            if self.modele_id.type_ids:
-                self.type_vehicule_id = self.modele_id.type_ids[0].id
-    @api.onchange('marque_id', 'type_vehicule_id')
-    def _onchange_marque_type(self):
-        if self.modele_id:
-            # modèle incompatible avec marque
-            if self.marque_id and self.modele_id.marque_id != self.marque_id:
-                self.modele_id = False
-
-            # modèle incompatible avec type
-            if self.type_vehicule_id and self.type_vehicule_id not in self.modele_id.type_ids:
-                self.modele_id = False
-
-        # -------------------
-        # Contrôle côté Python
-        # -------------------
+            # Déduire la Marque
+            if not self.marque_id or self.marque_id != self.modele_id.marque_id:
+                self.marque_id = self.modele_id.marque_id.id
+            
+            # Déduire le Type de Véhicule
+            # S'il y a plusieurs types associés au modèle, nous prenons le premier.
+            # Sinon, si la liste est vide, on ne change rien.
+            types = self.modele_id.type_ids
+            if types:
+                if not self.type_vehicule_id or self.type_vehicule_id not in types:
+                    self.type_vehicule_id = types[0].id
+        else:
+            # Si le modèle est effacé, on ne touche pas à la marque et au type,
+            # car ils peuvent être nécessaires pour le filtre.
+            pass
+    # -------------------
+    # Contrôle côté Python
+    # -------------------
     @api.constrains('matricule')
     def _check_matricule_unique(self):
         for rec in self:
@@ -330,7 +332,7 @@ class Vehicule(models.Model):
     # -----------------------------------------------------
 
     @api.model
-    def _update_odometer_from_api_par_matricule(self):
+    def update_odometer_from_api_par_matricule(self):
         api_key = "2B61B041-CBBF-4A0C-A1FE-D95BCA0E7510"
         api_url = f"https://services.geoflotte.com/getrealtime/{api_key}"
 
@@ -370,12 +372,6 @@ class Vehicule(models.Model):
                 vals['odometer_last_update'] = dt
 
             vehicule.write(vals)
-    def update_odometer_from_api_par_matricule(self):
-        """
-        Bouton manuel : appelle la méthode technique
-        """
-        self.env['logifleet.vehicule']._update_odometer_from_api_par_matricule()
-        return True
 
 
    # ... dans la classe Vehicule ...
@@ -383,7 +379,7 @@ class Vehicule(models.Model):
         for veh in self:
             fiche = veh.fiche_controle_id
             alert_data = [
-             
+                # Utilisez la clé technique 'assurance' (minuscule)
                 ('assurance', date.today() + timedelta(days=fiche.assurance_interval_days)), 
                 ('ct', date.today() + timedelta(days=fiche.ct_interval_days)),
                 ('vignette', date.today() + timedelta(days=fiche.vignette_interval_days)),
@@ -621,10 +617,6 @@ class VehiculeAlert(models.Model):
         ('done', 'Traité')
     ], compute='_compute_activity_state', string="Statut d'Activité", store=False)
 
-    km_alert_done = fields.Float(
-        string="Km au moment de l'alerte",
-        help="Kilométrage du véhicule au moment où l'alerte a été traitée"
-    )
 
     @api.depends('next_date', 'state')
     def _compute_activity_state(self):
@@ -721,7 +713,7 @@ class VehiculeAlert(models.Model):
     def action_done(self):
         for rec in self:
             rec.state = 'done'
-            rec.km_alert_done = rec.vehicule_id.odometer or 0.0
+
             # Fermer l’activité
             activities = self.env['mail.activity'].search([
                 ('res_model', '=', 'logifleet.alert'),

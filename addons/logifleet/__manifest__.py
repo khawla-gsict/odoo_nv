@@ -22,6 +22,7 @@
     'assets': {
         'web.assets_backend': [
             'logifleet/static/src/js/dashboard.js',
+            "logifleet/static/src/xml/dashboard.xml",
             'logifleet/static/src/css/vehicule_alert.css',
         ],
   
@@ -34,6 +35,8 @@
         'views/inspection_views.xml',
         'views/controle_administratif.xml',
         'views/fiche_controle_views.xml',
+       
+
         'views/vehicule_views.xml',
         'views/client_views.xml',
         'views/type_models.xml',
@@ -41,6 +44,7 @@
         'views/logifleet_expense_views.xml',
         'views/parc_auto.xml',
         'views/menu.xml',
+         'views/dashboard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

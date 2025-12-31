@@ -8,4 +8,4 @@ class Conducteur(models.Model):
     num_permis = fields.Char(string="Numero de permis")
     type_permis = fields.Selection(selection=[('B','B'),('C','C'),('D','D')], default='B')
     disponibilite = fields.Char(string="Disponibilte  conducteur")
-    status = fields.Char(string="Status")
+    status = fields.Char(string="Statu")

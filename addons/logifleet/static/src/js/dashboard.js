@@ -1,22 +1,23 @@
 ﻿/** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
-export class ParcDashboard extends Component {
+class LogifleetDashboard extends Component {
     setup() {
-        super.setup();
-        this.loadData();
-    }
+        this.orm = useService("orm");
+        this.data = {};
 
-    async loadData() {
-        const data = await this.rpc("/logifleet/dashboard/data", {});
-        console.log("📊 Données du dashboard :", data);
-
-        // TODO: mettre à jour les graphiques Chart.js avec `data`
+        onWillStart(async () => {
+            this.data = await this.orm.call(
+                "logifleet.dashboard",
+                "get_kpis",
+                []
+            );
+        });
     }
 }
-ParcDashboard.template = "logifleet.dashboard_template";
 
-// Enregistrer l’action client
-registry.category("actions").add("parc_dashboard", ParcDashboard);
+LogifleetDashboard.template = "logifleet.Dashboard";
+registry.category("actions").add("logifleet_dashboard", LogifleetDashboard);

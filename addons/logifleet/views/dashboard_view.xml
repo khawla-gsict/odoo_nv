@@ -1,0 +1,12 @@
+<odoo>
+    <record id="action_logifleet_dashboard" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">logifleet_dashboard</field>
+    </record>
+
+    <menuitem id="menu_logifleet_dashboard"
+              name="Dashboard"
+              parent="logifleet.root_menu"
+              action="action_logifleet_dashboard"
+              sequence="1"/>
+</odoo>
