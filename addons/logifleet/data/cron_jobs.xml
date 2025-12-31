@@ -1,0 +1,23 @@
+<odoo>
+	<data noupdate="1">
+		<record id="ir_cron_check_logifleet_alerts" model="ir.cron">
+			<field name="name">LogiFleet: Vérification Périodique des Alertes</field>
+			<field name="model_id" ref="model_logifleet_fiche_controle"/>
+			<field name="state">code</field>
+			<field name="code">model.check_alerts()</field>
+			<field name="interval_number">1</field>
+			<field name="interval_type">days</field>
+			<field name="active" eval="True"/>
+		</record>
+
+		<record id="ir_cron_update_odometer" model="ir.cron">
+			<field name="name">Mise à jour odomètre depuis API</field>
+			<field name="model_id" ref="model_logifleet_vehicule"/>
+			<field name="state">code</field>
+			<field name="code">model._update_odometer_from_api_par_matricule()</field>
+			<field name="interval_number">12</field>
+			<field name="interval_type">hours</field>
+			<field name="active" eval="True"/>
+		</record>
+	</data>
+</odoo>

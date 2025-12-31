@@ -1,0 +1,18 @@
+<odoo>
+	<template id="logifleet_dashboard_template" name="Dashboard Template">
+		<div class="oe_dashboard container mt-4">
+			<h1>📊 Tableau de Bord - Parc Auto</h1>
+
+			<div class="row mt-4">
+				<div class="col-6">
+					<h3>Véhicules par type</h3>
+					<canvas id="vehicules_par_type"></canvas>
+				</div>
+				<div class="col-6">
+					<h3>Dépenses de maintenance</h3>
+					<canvas id="depenses_maintenance"></canvas>
+				</div>
+			</div>
+		</div>
+	</template>
+</odoo>

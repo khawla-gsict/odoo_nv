@@ -1,0 +1,13 @@
+<odoo>
+
+	<menuitem id="menu_mission_root" name="Missions"/>
+	<menuitem id="menu_mission" name="Gestion Missions" parent="menu_mission_root" action="action_mission"/>
+	<menuitem id="menu_pointage_root"
+			  name="Pointage Véhicules"
+			  parent="menu_mission_root"/>
+
+	<!-- Menu entry under Missions (adapte parent si nécessaire) -->
+	<menuitem id="menu_timesheet_root" name="Timesheet" parent="menu_mission_root" sequence="90"/>
+	<menuitem id="menu_timesheet_wizard" name="Pointage Mensuel" parent="menu_timesheet_root" action="action_timesheet_wizard" sequence="1"/>
+
+</odoo>

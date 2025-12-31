@@ -1,0 +1,11 @@
+<odoo>
+	<record id="report_ordre_mission_pdf" model="ir.actions.report">
+		<field name="name">Ordre de Mission</field>
+		<field name="model">mission.mission</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">mission.report_ordre_mission_template</field>
+		<field name="print_report_name">'Ordre_Mission_' + object.titre_mission</field>
+	</record>
+
+
+</odoo>

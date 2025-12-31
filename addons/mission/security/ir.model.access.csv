@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mission_mission_user,access_mission_mission_user,model_mission_mission,base.group_user,1,1,1,1
+access_mission_client_user,access_mission_client_user,model_mission_client,base.group_user,1,1,1,1
+access_mission_timesheet_wizard_user,access_mission_timesheet_wizard_user,model_mission_timesheet_wizard,base.group_user,1,1,1,1
+
+access_mission_vehicule_pointage_user,access_mission_vehicule_pointage_user,model_mission_vehicule_pointage,base.group_user,1,1,1,1
+

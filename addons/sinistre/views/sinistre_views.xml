@@ -1,0 +1,69 @@
+<odoo>
+	<record id="view_sinistre_form" model="ir.ui.view">
+		<field name="name">sinistre.form</field>
+		<field name="model">sinistre.sinistre</field>
+		<field name="arch" type="xml">
+			<form string="Sinistre">
+				<sheet>
+					<group>
+						<field name="vehicule_id"/>
+						<field name="conducteur_id"/>
+						<field name="type_sinistre"/>
+						<field name="lieu"/>
+						<field name="designation"/>
+						<field name="date_sinistre"/>
+						<field name="date_mis_en_service"/>
+						<field name="nb_blesses"/>
+						<field name="description"/>
+						<field name="perturbation_humaine"/>
+					</group>
+					<notebook>
+						<page string="Demandes d’indemnisation">
+							<field name="demande_indemnisation_id">
+								<list editable="bottom">
+									<field name="type_assurance"/>
+									<field name="montant_demande"/>
+									<field name="montant_rembourse"/>
+									<field name="statut"/>
+									<field name="cloture"/>
+								</list>
+								<form>
+									<group>
+										<field name="type_assurance"/>
+										<field name="montant_demande"/>
+										<field name="montant_rembourse"/>
+										<field name="statut"/>
+										<field name="rapport_expert" filename="rapport_filename"/>
+									</group>
+								</form>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_sinistre_tree" model="ir.ui.view">
+		<field name="name">sinistre.list</field>
+		<field name="model">sinistre.sinistre</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="date_sinistre"/>
+				<field name="type_sinistre"/>
+				<field name="lieu"/>
+				<field name="nb_blesses"/>
+				<field name="perturbation_humaine"/>
+				<field name="vehicule_id"/>
+			</list>
+		</field>
+	</record>
+
+	
+
+	<record id="action_sinistre" model="ir.actions.act_window">
+		<field name="name">Sinistres</field>
+		<field name="res_model">sinistre.sinistre</field>
+		<field name="view_mode">list,form</field>
+	</record>
+</odoo>

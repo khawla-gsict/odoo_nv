@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_logifleet_vehicule,access_logifleet_vehicule,model_logifleet_vehicule,base.group_user,1,1,1,1
+access_logifleet_client,access_logifleet_client,model_logifleet_client,base.group_user,1,1,1,1
+access_logifleet_type_vehicule,access_logifleet_type_vehicule,model_logifleet_type_vehicule,base.group_user,1,1,1,1
+access_logifleet_marque,access_logifleet_marque,model_logifleet_marque,base.group_user,1,1,1,1
+access_logifleet_modele,access_logifleet_modele,model_logifleet_modele,base.group_user,1,1,1,1
+access_logifleet_conducteur,access_logifleet_conducteur,model_logifleet_conducteur,base.group_user,1,1,1,1
+access_logifleet_expense,access_logifleet_expense,model_logifleet_expense,base.group_user,1,1,1,1
+access_logifleet_inspection,access_logifleet_inspection,model_logifleet_inspection,base.group_user,1,1,1,1
+access_logifleet_fiche_controle,access_logifleet_fiche_controle,model_logifleet_fiche_controle,base.group_user,1,1,1,1
+access_logifleet_controle_administratif,access_logifleet_controle_administratif,model_logifleet_controle_administratif,base.group_user,1,1,1,1
+access_logifleet_alert,access_logifleet_alert,model_logifleet_alert,base.group_user,1,1,1,1

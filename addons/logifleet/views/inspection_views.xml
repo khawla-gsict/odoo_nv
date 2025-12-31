@@ -1,0 +1,54 @@
+<odoo>
+	<record id="view_logifleet_inspection_form" model="ir.ui.view">
+		<field name="name">logifleet.inspection.form</field>
+		<field name="model">logifleet.inspection</field>
+		<field name="arch" type="xml">
+			<form string="Contrôle Périodique">
+				<header>
+				</header>
+				<sheet>
+					<group>
+						<field name="name"/>
+						<field name="vehicule_id"/>
+						<field name="date_inspection"/>
+						<field name="odometer_inspection"/>
+						<field name="inspecteur_id"/>
+						<field name="maintenance_id" groups="base.group_no_one"/>
+					</group>
+					<group string="Conditions Relevées">
+						<field name="etat_general" help="Saisie manuelle de l'état général constaté, distinct du calcul automatique du véhicule."/>
+						<field name="etat_carrosserie"/>
+						<field name="etat_pneumatique"/>
+						<field name="etat_accessoires"/>
+					</group>
+					<field name="notes_detaillees" placeholder="Détails spécifiques relevés lors de l'inspection..."/>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_logifleet_inspection_tree" model="ir.ui.view">
+		<field name="name">logifleet.inspection.list</field>
+		<field name="model">logifleet.inspection</field>
+		<field name="arch" type="xml">
+			<list string="Historique des Contrôles">
+				<field name="name"/>
+				<field name="vehicule_id"/>
+				<field name="date_inspection"/>
+				<field name="etat_general"/>
+				<field name="inspecteur_id"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="logifleet_inspection_action" model="ir.actions.act_window">
+		<field name="name">Contrôles Véhicule</field>
+		<field name="res_model">logifleet.inspection</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Créez une nouvelle fiche d'inspection pour enregistrer l'état actuel d'un véhicule.
+			</p>
+		</field>
+	</record>
+</odoo>

@@ -1,0 +1,44 @@
+<odoo>
+	<record id="view_controle_administratif_form" model="ir.ui.view">
+		<field name="name">logifleet.controle_administratif.form</field>
+		<field name="model">logifleet.controle_administratif</field>
+		<field name="arch" type="xml">
+			<form string="Contrôle Administratif">
+				<header>
+					<button name="action_valider" type="object" string="Valider" class="oe_highlight"/>
+					<button string="Fermer" class="oe_link" special="cancel"/>
+				</header>
+				<sheet>
+					<group>
+						<field name="vehicule_id"/>
+						<field name="type_controle"/>
+						<field name="date_controle"/>
+						<field name="montant"/>
+						<field name="informations"/>
+						<field name="state" readonly="1"/>
+					</group>
+
+					<group string="Historique des contrôles">
+						<field name="historique_controles_ids" readonly="1">
+							<list>
+								<field name="type_controle"/>
+								<field name="date_controle"/>
+								<field name="montant"/>
+								<field name="state"/>
+							</list>
+						</field>
+					</group>
+
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_controle_administratif_form" model="ir.actions.act_window">
+		<field name="name">Contrôle Administratif</field>
+		<field name="res_model">logifleet.controle_administratif</field>
+		<field name="view_mode">form,list</field>
+		<field name="view_id" ref="view_controle_administratif_form"/>
+		<field name="target">current</field>
+	</record>
+</odoo>

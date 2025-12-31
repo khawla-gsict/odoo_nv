@@ -1,0 +1,127 @@
+<odoo>
+    <record id="view_form_maintenance" model="ir.ui.view">
+        <field name="name">maintenance.vehicule.form</field>
+        <field name="model">maintenance_vehicule.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Véhicule">
+                <header>
+                    <button name="action_demander_maintenance"
+                            string="Demander Pièces (Bon Interne)"
+                            type="object"
+                            class="btn-primary"
+                            attribute_node="{'invisible': [('status', 'not in', ['brouillon'])]}"/>
+
+                    <button name="action_lancer_maintenance"
+                            string="Lancer Maintenance"
+                            type="object"
+                            class="btn-info"
+                            attribute_node="{'invisible': [('status', '!=', 'en_attente_pieces')]}"/>
+
+                    <button name="action_valider_maintenance"
+                            string="Valider Maintenance"
+                            type="object"
+                            class="btn-success"
+                            attribute_node="{'invisible': [('status', '!=', 'en_cours')]}"/>
+
+                    <field name="status" widget="statusbar"
+                            statusbar_visible="brouillon,en_attente_pieces,en_cours,terminee"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="vehicule_id"/>
+                        <field name="type_maintenance"/>
+                        <field name="date_maintenance"/>
+						<field name="date_debut"/>
+						<field name="date_fin"/>
+
+						<field name="lieu"/>
+                        <field name="cout_total"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Pièces utilisées">
+                            <field name="piece_ids">
+                                <list editable="bottom" string="Pièces" create="true" delete="true">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="prix_unitaire" readonly="1"/>
+                                    <field name="subtotal" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Autres infos">
+                            <group>
+                                <field name="note"/>
+                                <field name="picking_id" readonly="1"/>
+                                <field name="purchase_order_id" readonly="1" attribute_node="{'invisible': [('purchase_order_id', '=', False)]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    
+                    <notebook>
+                        <page name="controles_etat" string="Contrôles d'État du Véhicule">
+                    
+                            <group col="2" string="Contrôle Début (Lancement)">
+                                <field name="inspection_depart_id" readonly="1"/>
+                                
+                               <button name="action_open_or_create_inspection_depart"
+        string="Effectuer le Contrôle de Départ"
+        type="object"
+        class="oe_highlight"
+        context="{'form_view_ref': 'view_form_maintenance'}" attribute_node="{'invisible': [('is_depart_inspection_done', '=', True), ('status', 'in', ('en_cours', 'terminee'))]}"
+/>
+                            </group>
+                    
+                            <group col="2" string="Contrôle Fin (Terminaison)">
+                                <field name="inspection_retour_id" readonly="1"/>
+                                
+                                <button name="action_open_or_create_inspection_retour" 
+                                        string="Effectuer le Contrôle de Retour"
+                                        type="object"
+                                        class="oe_highlight"
+                                        attribute_node="{'invisible': ['|', ('is_retour_inspection_done', '=', True), ('status', '!=', 'en_cours')]}"
+                                />
+                            </group>
+                    
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_maintenance_list" model="ir.ui.view">
+        <field name="name">maintenance.vehicule.list</field>
+        <field name="model">maintenance_vehicule.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Maintenance Véhicules">
+                <field name="vehicule_id"/>
+                <field name="type_maintenance"/>
+                <field name="date_maintenance"/>
+                <field name="status"/>
+                <field name="cout_total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="maintenance_action" model="ir.actions.act_window">
+        <field name="name">Maintenances Véhicules</field>
+        <field name="res_model">maintenance_vehicule.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez une nouvelle maintenance pour un véhicule du parc.
+            </p>
+        </field>
+    </record>
+<record id="action_maintenance_internal_pickings" model="ir.actions.act_window">
+    <field name="name">Bons internes de maintenance</field>
+    <field name="res_model">stock.picking</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="stock.vpicktree"/>
+</record>
+
+
+</odoo>

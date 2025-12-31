@@ -1,0 +1,12 @@
+<odoo>
+	<report
+        id="action_report_ordre_mission"
+        model="mission.mission"
+        string="Ordre de Mission"
+        report_type="qweb-pdf"
+        name="mission.report_ordre_mission"
+        file="mission.report_ordre_mission"
+        print_report_name="'Ordre_de_Mission_' + object.titre_mission"
+    />
+	
+</odoo>

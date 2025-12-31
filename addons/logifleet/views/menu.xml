@@ -1,0 +1,51 @@
+<odoo>
+	<!-- Menu racine -->
+	<menuitem id="root_menu" name="Parc_auto"
+			   action="vehicule_action"/>
+	<record id="action_dashboard" model="ir.actions.client">
+		<field name="name">Dashboard</field>
+		<field name="tag">parc_dashboard</field>
+	</record>
+
+
+	<!-- Sous-menus -->
+	<menuitem id="vehicule_menu"
+              name="Vehicules "
+              parent="root_menu"
+              action="vehicule_action"
+              sequence="10"/>
+	<menuitem id="client_menu"
+              name="Clients "
+              parent="root_menu"
+              action="client_action"
+              sequence="11"/>
+	<menuitem id="menu_type_vehicule"
+				  name="Types de véhicule"
+				  parent="vehicule_menu"
+				  action="action_type_vehicule"/>
+	<menuitem id="menu_marque"
+              name="Marques"
+              parent="vehicule_menu"
+              action="action_marque"/>
+	<menuitem id="menu_modele"
+              name="Modèles"
+              parent="vehicule_menu"
+              action="action_modele"/>
+	<menuitem id="menu_conducteur"
+              name="Conducteur"
+              parent="root_menu"
+              action="action_conducteur"/>
+	<menuitem id="menu_logifleet_expense_root"
+              name="Dépenses"
+              parent="root_menu"
+              action="action_logifleet_expense"
+              sequence="40"/>
+	<!-- Menu -->
+	<menuitem id="menu_fiche_controle" name="Fiches de contrôle" parent="root_menu"
+              action="action_fiche_controle" sequence="10"/>
+	<menuitem id="menu_alertes_vehicule"
+			  name="Alertes Véhicules"
+			  parent="root_menu"
+			  action="action_vehicule_alerts"
+			  sequence="50"/>
+</odoo>

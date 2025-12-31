@@ -1,0 +1,42 @@
+<odoo>
+	<record id="view_logifleet_expense_tree" model="ir.ui.view">
+		<field name="name">logifleet.expense.list</field>
+		<field name="model">logifleet.expense</field>
+		<field name="arch" type="xml">
+			<list string="Dépenses Véhicules">
+				<field name="date"/>
+				<field name="vehicle_id"/>
+				<field name="type"/>
+				<field name="amount"/>
+				<field name="company_id"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_logifleet_expense_form" model="ir.ui.view">
+		<field name="name">logifleet.expense.form</field>
+		<field name="model">logifleet.expense</field>
+		<field name="arch" type="xml">
+			<form string="Dépense Véhicule">
+				<sheet>
+					<group>
+						<field name="name"/>
+						<field name="vehicle_id"/>
+						<field name="type"/>
+						<field name="amount"/>
+						<field name="date"/>
+						<field name="notes"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_logifleet_expense" model="ir.actions.act_window">
+		<field name="name">Dépenses</field>
+		<field name="res_model">logifleet.expense</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+
+</odoo>

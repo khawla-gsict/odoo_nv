@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- Rapport Timesheet PDF -->
+	<template id="timesheet_pdf_template">
+		<t t-call="web.external_layout">
+
+			<div class="page">
+
+				<!-- TITRE -->
+				<h2 style="text-align:center;">
+					Timesheet —
+					<t t-esc="data['client']"/>
+					—
+					<t t-esc="data['date_start']"/>
+					au
+					<t t-esc="data['date_end']"/>
+				</h2>
+
+				<!-- TABLEAU -->
+				<table class="table table-bordered" style="width:100%; margin-top:20px; font-size:12px;">
+					<thead>
+						<tr>
+							<th style="width:120px;">Matricule</th>
+							<th style="width:120px;">Modèle</th>
+							<th style="width:150px;">Conducteur</th>
+
+							<!-- Colonnes dynamiques : vraies dates -->
+							<t t-foreach="data['dates']" t-as="dt">
+								<th style="text-align:center;">
+									<t t-esc="dt"/>
+								</th>
+							</t>
+
+							<th>Total</th>
+						</tr>
+					</thead>
+
+					<tbody>
+
+						<!-- SI données -->
+						<t t-if="data['matrix']">
+							<t t-foreach="data['matrix']" t-as="veh">
+
+								<tr>
+									<!-- Matricule -->
+									<td>
+										<t t-esc="veh['matricule']"/>
+									</td>
+									<td>
+										<t t-esc="veh['modele']"/>
+									</td>
+
+									<!-- Conducteur -->
+									<td>
+										<t t-esc="veh['conducteur']"/>
+									</td>
+
+									<!-- Jours ✓ -->
+									<t t-foreach="enumerate(data['dates'], start=1)" t-as="item">
+										<t t-set="day_index" t-value="item[0]"/>
+										<td style="text-align:center;">
+											<t t-esc="'✓' if day_index in veh['days'] else ''"/>
+										</td>
+									</t>
+
+									<!-- Total -->
+									<td style="text-align:center; font-weight:bold;">
+										<t t-esc="veh['total']"/>
+									</td>
+								</tr>
+
+							</t>
+						</t>
+
+						<!-- SI VIDE -->
+						<t t-if="not data['matrix']">
+							<tr>
+								<td t-att-colspan="2 + len(data['dates']) + 1" style="text-align:center;">
+									Aucun véhicule n’a été trouvé pour cette période.
+								</td>
+							</tr>
+						</t>
+
+					</tbody>
+				</table>
+
+				<!-- SIGNATURES -->
+				<br/>
+				<br/>
+				<br/>
+
+				<table style="width:100%; margin-top:40px;">
+					<tr>
+						<td style="text-align:center;">
+							<strong>Signature Responsable</strong><br/><br/><br/>
+							______________________
+						</td>
+
+						<td style="text-align:center;">
+							<strong>Signature Client</strong><br/><br/><br/>
+							______________________
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</t>
+	</template>
+
+</odoo>

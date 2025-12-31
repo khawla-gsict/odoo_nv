@@ -1,0 +1,61 @@
+<odoo>
+	<record id="view_fiche_controle_form" model="ir.ui.view">
+		<field name="name">logifleet.fiche.controle.form</field>
+		<field name="model">logifleet.fiche_controle</field>
+		<field name="arch" type="xml">
+			<form string="Fiche de contrôle véhicule">
+				<sheet>
+					<group>
+						<field name="vehicule_id" readonly="1"/>
+						<field name="name"/>
+						<field name="state" readonly="1"/>
+					</group>
+
+					<notebook>
+						<page string="Conditions">
+							<group>
+								<field name="interval_pneus_km"/>
+								<field name="interval_vidange_km"/>
+								<field name="interval_chaine_distribution_km"/>
+								<field name="interval_assurance_jours"/>
+								<field name="interval_visite_technique_jours"/>
+								<field name="interval_vignette_jours"/>
+							</group>
+						</page>
+
+						<page string="Prochaines échéances">
+							<group>
+								<field name="date_prochaine_maintenance" readonly="1"/>
+								<field name="date_prochaine_assurance" readonly="1"/>
+								<field name="date_prochaine_visite_technique" readonly="1"/>
+								<field name="date_prochaine_vignette" readonly="1"/>
+								<field name="km_derniere_vidange" readonly="1"/>
+								<field name="km_derniere_chaine_distribution" readonly="1"/>
+							</group>
+						</page>
+					</notebook>
+					<group>
+						<button name="action_valider" type="object" string="Valider" class="btn-primary"/>
+						<button string="Fermer" class="btn-secondary" special="cancel"/>
+					</group>
+
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+
+<!-- Action pour ouvrir la liste / formulaire des fiches de contrôle -->
+	<record id="action_fiche_controle" model="ir.actions.act_window">
+		<field name="name">Fiches de contrôle</field>
+		<field name="res_model">logifleet.fiche_controle</field>
+		<field name="view_mode">list,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Crée automatiquement après l'ajout d'un véhicule.
+			</p>
+		</field>
+	</record>
+
+
+</odoo>

@@ -1,0 +1,122 @@
+<odoo>
+	<!-- Vue pour Type de véhicule -->
+	<record id="view_type_vehicule_list" model="ir.ui.view">
+		<field name="name">logifleet.type_vehicule.list</field>
+		<field name="model">logifleet.type_vehicule</field>
+		<field name="arch" type="xml">
+			<list string="Types de véhicule">
+				<field name="nom_type"/>
+				<field name="marque_ids"/>
+			</list>
+			
+		</field>
+	</record>
+
+	<record id="view_type_vehicule_form" model="ir.ui.view">
+		<field name="name">logifleet.type_vehicule.form</field>
+		<field name="model">logifleet.type_vehicule</field>
+		<field name="arch" type="xml">
+			<form string="Type de véhicule">
+				<sheet>
+					<group>
+						<field name="nom_type"/>
+						<field name="marque_ids" widget="many2many_tags"/>
+						
+						<field name="modele_ids" widget="many2many"/>
+						
+						<field name="vehicule_ids"/>
+					</group>
+					
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_type_vehicule" model="ir.actions.act_window">
+		<field name="name">Types de véhicule</field>
+		<field name="res_model">logifleet.type_vehicule</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+	
+
+
+	<!-- Vue pour Marque -->
+	<record id="view_marque_list" model="ir.ui.view">
+		<field name="name">logifleet.marque.list</field>
+		<field name="model">logifleet.marque</field>
+		<field name="arch" type="xml">
+			<list string="Marques">
+				<field name="nom_marque"/>
+				<field name="type_ids"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_marque_form" model="ir.ui.view">
+		<field name="name">logifleet.marque.form</field>
+		<field name="model">logifleet.marque</field>
+		<field name="arch" type="xml">
+			<form string="Marque">
+				<sheet>
+					<group>
+						<field name="nom_marque"/>
+						<field name="type_ids" widget="many2many_tags"/>
+						<field name="modele_ids"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_marque" model="ir.actions.act_window">
+		<field name="name">Marques</field>
+		<field name="res_model">logifleet.marque</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+	
+
+	<!-- Vue pour Modèle -->
+	<record id="view_modele_list" model="ir.ui.view">
+		<field name="name">logifleet.modele.list</field>
+		<field name="model">logifleet.modele</field>
+		<field name="arch" type="xml">
+			<list string="Modèles">
+				<field name="nom_modele"/>
+			
+				<field name="marque_id"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_modele_form" model="ir.ui.view">
+		<field name="name">logifleet.modele.form</field>
+		<field name="model">logifleet.modele</field>
+		<field name="arch" type="xml">
+			<form string="Modèle">
+				<sheet>
+					<group>
+						<field name="nom_modele"/>
+						<field name="marque_id"/>
+						<field name="type_ids" widget="many2many_tags"/>
+						<field name="vehicule_ids"/>
+					</group>
+					<notebook>
+						<page string="Pièces compatibles">
+							<field name="piece_ids" widget="many2many_tags"/>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_modele" model="ir.actions.act_window">
+		<field name="name">Modèles</field>
+		<field name="res_model">logifleet.modele</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+
+</odoo>

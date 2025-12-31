@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- Action Report correcte pour Odoo 18 -->
+	<record id="timesheet_pdf_report" model="ir.actions.report">
+		<field name="name">Timesheet PDF</field>
+		<field name="model">mission.timesheet.wizard</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">mission.timesheet_pdf_template</field>
+		<field name="print_report_name">'Timesheet_%s_%s' % (object.month, object.year)</field>
+	</record>
+
+</odoo>

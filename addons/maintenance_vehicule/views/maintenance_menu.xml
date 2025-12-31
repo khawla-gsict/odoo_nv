@@ -1,0 +1,18 @@
+<odoo>
+	<!-- Menu racine -->
+
+
+	<menuitem id="menu_maintenance_root"
+			  name="Maintenance"
+			  web_icon="maintenance_vehicule,static/description/icon.png"/>
+	<!-- Menu -->
+	<menuitem id="menu_maintenance_root" name="Maintenance Véhicules" sequence="10"/>
+	<menuitem id="menu_maintenance_action" name="Maintenances"
+              parent="menu_maintenance_root" action="maintenance_action"/>
+	<menuitem id="menu_maintenance_picking"
+          name="Bons internes de maintenance"
+          parent="menu_maintenance_root"
+          action="action_maintenance_internal_pickings"
+          sequence="20"/>
+
+</odoo>

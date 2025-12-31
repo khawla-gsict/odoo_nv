@@ -1,0 +1,10 @@
+<odoo>
+	<!-- Menu racine -->
+	<menuitem id="menu_sinistre_root" name="Gestion Sinistres"/>
+	<menuitem id="menu_sinistre" name="Sinistres" parent="menu_sinistre_root" action="action_sinistre"/>
+
+	<menuitem id="menu_indemnisation"
+              name="Demandes d’indemnisation"
+              parent="menu_sinistre_root"
+              action="action_indemnisation"/>
+</odoo>

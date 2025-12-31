@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_maintenance_vehicule_maintenance,access_maintenance_vehicule_maintenance,model_maintenance_vehicule_maintenance,base.group_user,1,1,1,1
+access_maintenance_vehicule_piece_line_user,access_maintenance_vehicule_piece_line_user,model_maintenance_vehicule_piece_line,base.group_user,1,1,1,1

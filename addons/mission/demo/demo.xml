@@ -1,0 +1,9 @@
+<odoo>
+	<record id="mission_demo_1" model="mission.mission">
+		<field name="titre_mission">transport_marchandise</field>
+		<field name="description">Transport de marchandises Alger → Oran</field>
+		<field name="date_debut">2025-10-01</field>
+		<field name="km">400</field>
+		<field name="status">en_cours</field>
+	</record>
+</odoo>

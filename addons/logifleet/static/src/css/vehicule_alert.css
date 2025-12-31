@@ -1,0 +1,20 @@
+.alert_Maintenance {
+    background-color: #ff4d4d; /* rouge */
+    color: white;
+    padding: 5px;
+    margin-bottom: 2px;
+}
+
+.alert_Assurance {
+    background-color: #ffa500; /* orange */
+    color: white;
+    padding: 5px;
+    margin-bottom: 2px;
+}
+
+.alert_CT {
+    background-color: #ffff66; /* jaune */
+    color: black;
+    padding: 5px;
+    margin-bottom: 2px;
+}

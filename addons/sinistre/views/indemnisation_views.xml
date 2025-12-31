@@ -1,0 +1,84 @@
+<odoo>
+	<!-- Form view -->
+	<record id="view_indemnisation_form" model="ir.ui.view">
+		<field name="name">indemnisation.form</field>
+		<field name="model">sinistre.indemnisation</field>
+		<field name="arch" type="xml">
+			<form string="Demande d’indemnisation">
+				<sheet>
+					<group>
+						<field name="sinistre_id"/>
+						<field name="type_assurance"/>
+						<field name="montant_demande"/>
+						<field name="montant_rembourse"/>
+						<field name="statut"/>
+						<field name="cloture" readonly="1"/>
+					</group>
+					<group>
+						<field name="rapport_expert" filename="rapport_filename"/>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!-- Tree view -->
+	<record id="view_indemnisation_tree" model="ir.ui.view">
+		<field name="name">indemnisation.list</field>
+		<field name="model">sinistre.indemnisation</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="sinistre_id"/>
+				<field name="type_assurance"/>
+				<field name="montant_demande"/>
+				<field name="montant_rembourse"/>
+				<field name="statut"/>
+				<field name="cloture"/>
+			</list>
+		</field>
+	</record>
+
+	<!-- Kanban view (suivi visuel) -->
+	<record id="view_indemnisation_kanban" model="ir.ui.view">
+		<field name="name">indemnisation.kanban</field>
+		<field name="model">sinistre.indemnisation</field>
+		<field name="arch" type="xml">
+			<kanban>
+				<templates>
+					<t t-name="kanban-box">
+						<div class="oe_kanban_card">
+					
+							<div>
+								<field name="sinistre_id"/>
+							</div>
+							<div>
+								<field name="type_assurance"/>
+							</div>
+							<div>
+								Montant demandé: <field name="montant_demande"/>
+							</div>
+							<div>
+								Remboursé: <field name="montant_rembourse"/>
+							</div>
+							<div>
+								Statut: <field name="statut"/>
+							</div>
+							<div>
+								<field name="cloture"/>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
+
+	<!-- Action + Menu -->
+	<record id="action_indemnisation" model="ir.actions.act_window">
+		<field name="name">Demandes d’indemnisation</field>
+		<field name="res_model">sinistre.indemnisation</field>
+		<field name="view_mode">kanban,list,form</field>
+	</record>
+
+
+</odoo>

@@ -1,0 +1,148 @@
+<odoo>
+	<record id="view_form_mission" model="ir.ui.view">
+		<field name="name">mission.mission.form</field>
+		<field name="model">mission.mission</field>
+		<field name="arch" type="xml">
+			<form string="Mission">
+				<header>
+					<field name="status" widget="statusbar" statusbar_visible="brouillon,validee,terminee"/>
+
+					<button name="action_valider_mission"
+                            type="object"
+                            string="✅ Valider"
+                            class="btn-primary"
+                            invisible="status != 'brouillon'"/>
+
+					<button name="action_terminer_mission"
+                            type="object"
+                            string="🚩 Terminer"
+                            class="btn-success"
+                            invisible="status != 'validee'"/>
+
+					<button name="%(report_ordre_mission_pdf)d"
+                            string="📝 Ordre de Mission"
+                            type="action"
+                            class="btn-secondary"/>
+
+					<button name="action_facturer_mission"
+                            string="💰 Facturer"
+                            type="object"
+                            invisible="status != 'terminee'"/>
+				</header>
+
+				<sheet>
+					<group>
+						<field name="titre_mission"/>
+						<field name="client_id"/>
+						<field name="conducteur_id"/>
+					</group>
+
+					<!-- 🔹 Nouveau groupe : Sélection hiérarchique du véhicule -->
+					<group string="Véhicule">
+						<field name="type_vehicule_id"/>
+						<field name="marque_id"/>
+						<field name="modele_id"/>
+						<field name="vehicule_id"/>
+					</group>
+
+					<!-- 🔹 Adresses visibles uniquement pour les missions de transport -->
+					<group string="Localisation"
+                           invisible="titre_mission in ['location_mensuelle', 'location_annuelle']">
+						<field name="adresse_depart"/>
+						<field name="adresse_arrive"/>
+					</group>
+
+					<group string="Dates"
+                           invisible="titre_mission == 'location_annuelle'">
+						<field name="date_debut"/>
+						<field name="date_fin"/>
+						<field name="date_validation" readonly="1"/>
+					</group>
+
+					<group>
+						<field name="km"/>
+						<field name="cout_total" readonly="1"/>
+						<field name="n_document" />
+					</group>
+
+					<group>
+						<field name="description"/>
+					</group>
+				</sheet>
+
+				<notebook>
+					<page name="controles_etat" string="Contrôles d'État du Véhicule">
+						<group col="2" string="Contrôle Départ (Lancement)">
+							<field name="is_depart_inspection_done" widget="badge"/>
+							<field name="inspection_depart_id" readonly="1"/>
+
+							<button name="action_open_or_create_inspection_depart"
+                                    string="Effectuer le Contrôle de Départ"
+                                    type="object"
+                                    class="oe_highlight"
+                                    invisible="is_depart_inspection_done or status in ('validee', 'en_cours', 'terminee')"/>
+						</group>
+
+						<group col="2" string="Contrôle Retour (Terminaison)">
+							<field name="is_retour_inspection_done" widget="badge"/>
+							<field name="inspection_retour_id" readonly="1"/>
+
+							<button name="action_open_or_create_inspection_retour"
+                                    string="Effectuer le Contrôle de Retour"
+                                    type="object"
+                                    class="oe_highlight"
+                                    invisible="is_retour_inspection_done or status not in ('validee', 'en_cours')"/>
+						</group>
+					</page>
+				</notebook>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_tree_mission" model="ir.ui.view">
+		<field name="name">mission.mission.list</field>
+		<field name="model">mission.mission</field>
+		<field name="arch" type="xml">
+			<list>
+				<field name="titre_mission"/>
+				<field name="type_vehicule_id" />
+
+				<field name="marque_id"
+					   domain="[('type_ids', 'in', type_vehicule_id)]"
+/>
+
+				<field name="modele_id"
+					   domain="[('marque_id', '=', marque_id)]"
+/>
+
+				<field name="vehicule_id"
+					   domain="[
+            ('type_vehicule_id', '=', type_vehicule_id),
+            ('marque_id', '=', marque_id),
+            ('modele_id', '=', modele_id)
+        ]"
+/>
+				<field name="client_id"/>
+				<field name="conducteur_id"/>
+				<field name="date_debut"/>
+				<field name="date_fin"/>
+				<field name="km"/>
+				<field name="cout_total"/>
+				<field name="n_document"/>
+				<field name="status"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="action_mission" model="ir.actions.act_window">
+		<field name="name">Missions</field>
+		<field name="res_model">mission.mission</field>
+		<field name="view_mode">list,form</field>
+	</record>
+<record id="model_mission_vehicule_pointage" model="ir.model">
+    <field name="name">mission.vehicule.pointage</field>
+    <field name="model">mission.vehicule.pointage</field>
+</record>
+
+
+</odoo>

@@ -1,0 +1,258 @@
+<odoo>
+	<record model="ir.ui.view" id="vehicule_form_view">
+		<field name="name">logifleet.vehicule.form</field>
+		<field name="model">logifleet.vehicule</field>
+		<field name="arch" type="xml">
+			<form>
+	<header>
+    <field name="status" widget="statusbar"
+           statusbar_visible="disponible,en_mission,en_maintenance"/>
+
+    <button type="action"
+           class="oe_stat_button"
+name="%(action_vehicule_alerts)d"
+icon="fa-exclamation-triangle"
+			invisible="active_alert_count == 0"
+            context="{'default_vehicule_id': id, 'search_default_vehicule_id': id}"> 
+                    <field name="active_alert_count" widget="statinfo" string="Alertes"/>
+    </button>
+</header>
+
+									
+
+										<sheet>
+											<widget
+						name="web_ribbon"
+						 text="ALERTE MAINTENANCE"
+						 bg_color="bg-danger"
+						 invisible="not maintenance_requise"
+											 />
+				
+
+					<group>
+						<field name="matricule"/>
+					<field name="type_vehicule_id"/>
+
+            <field name="marque_id"
+                 options="{'no_create': True}"
+                 domain="[('type_ids', 'in', type_vehicule_id)]"
+                 required="type_vehicule_id != False"/>
+
+            <field name="modele_id"
+                   domain="['&amp;', ('marque_id', '=', marque_id), ('type_ids', 'in', type_vehicule_id)]"
+                   options="{'no_create': True}"/>
+							
+						<field name="num_serie"/>
+						<field name="annee"/>
+						<field name="odometer"/>
+						 <button 
+        name="update_odometer_from_api_par_matricule"
+        type="object"
+        string="Mettre à jour Kilométrage"
+        class="btn-primary"
+    />
+						<field name="num_immobilisation"/>
+						<field name="designation"/>
+						<field name="etat_general" widget="badge"/>
+					</group>
+
+					<notebook>
+				<page name="details" string="Details">
+					  <group>
+
+						<field name="affectation"/>
+
+						<field name="client_id"
+							   readonly="affectation == 'interne'"/>
+
+						<field name="valeur_achete"
+							   readonly="affectation == 'externe'"/>
+
+						<field name="date_aquisition"
+							   readonly="affectation == 'externe'"/>
+
+					  </group>
+					</page>
+
+
+
+						<page name="other_information" string="Other Informations">
+							<group>
+								<field name="type_carburant"/>
+								<field name="pt_en_charge"/>
+								<field name="n_places"/>
+								<field name="n_chevaux"/>
+								<field name="image" widget="image"/>
+							</group>
+						</page>
+
+						<page name="conditions" string="Conditions et Inspection">
+							<group string="Seuils de Déclenchement Automatique">
+								<field name="prochain_changement_pneus_km" widget="integer"/>
+								<field name="prochain_changement_accessoires_date"/>
+							</group>
+							<group string="État Actuel (Mis à jour par Inspection)">
+								<field name="derniere_inspection_id" readonly="1"/>
+								<field name="etat_carrosserie"/>
+								<field name="etat_pneumatique"/>
+								<field name="etat_accessoires"/>
+							</group>
+
+							<separator string="Historique des Contrôles"/>
+							<field name="historique_inspection_ids">
+								<list editable="bottom">
+									<field name="name"/>
+									<field name="date_inspection"/>
+									<field name="etat_carrosserie"/>
+									<field name="etat_pneumatique"/>
+									<field name="etat_accessoires"/>
+									<field name="inspecteur_id"/>
+								</list>
+							</field>
+						</page>
+					</notebook>
+										  <group>
+                    <button name="action_open_fiche_controle" type="object" string="Ouvrir Fiche de Contrôle" class="btn-primary"/>
+                    <button name="action_open_controles_admin" type="object" string="Ouvrir Contrôles Administratifs" class="btn-secondary"/>
+                </group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="logifleet_vehicule_view_list" model="ir.ui.view">
+    <field name="name">logifleet.vehicule.list</field>
+    <field name="model">logifleet.vehicule</field>
+    <field name="arch" type="xml">
+ 
+		  <list string="Véhicules" 
+      decoration-danger="maintenance_requise"
+      decoration-warning="alerte_imminente">
+
+              <field name="matricule"/>
+			<field name="type_vehicule_id"/>
+			<field name="marque_modele"/>
+            <field name="etat_general"/>
+            <field name="odometer"/>
+           
+           <field name="alerte_detail" widget="badge"
+       invisible="not alerte_detail"/>
+
+            <!-- Optionnel : bouton pour ouvrir la dernière alerte (petit eye icon) -->
+         <button name="action_open_latest_alert"
+        type="object"
+        icon="fa-exclamation-circle"
+        string=""
+        help="Ouvrir l'alerte la plus proche"
+        invisible="not alerte_detail"/>
+
+		<field name="status"/>
+        </list>
+    </field>
+</record>
+
+	<record id="vehicule_action" model="ir.actions.act_window">
+		<field name="name">Véhicules</field>
+		<field name="res_model">logifleet.vehicule</field>
+		<field name="view_mode">list,form,kanban</field>
+	</record>
+<record id="logifleet_alert_search" model="ir.ui.view">
+    <field name="name">logifleet.alert.search</field>
+    <field name="model">logifleet.alert</field>
+    <field name="arch" type="xml">
+        <search string="Rechercher Alerte">
+            
+            <field name="vehicule_id"/>
+            <field name="type"/>
+            <field name="state"/>
+            <field name="date_deadline"/>
+
+            <filter name="pending" 
+                    string="En attente" 
+                    domain="[('state','=','pending')]"/>
+            <filter name="done" 
+                    string="Traitées" 
+                    domain="[('state','=','done')]"/>
+            <filter name="today" 
+                    string="Échéance Aujourd'hui" 
+                    domain="[('date_deadline','=',context_today)]"/>
+            
+            <filter name="late" 
+                    string="En retard" 
+                    domain="[('date_deadline', '&lt;', context_today), ('state', '!=', 'done')]"/>
+            
+            <filter name="me" 
+                    string="Assignées à moi" 
+                    domain="[('activity_user_id','=',uid)]"/>
+
+            <group expand="0" string="Grouper par">
+                <filter string="Véhicule" 
+                        name="group_vehicule" 
+                        context="{'group_by':'vehicule_id'}"/>
+                <filter string="Type" 
+                        name="group_type" 
+                        context="{'group_by':'type'}"/>
+                <filter string="État" 
+                        name="group_state" 
+                        context="{'group_by':'state'}"/>
+                <filter string="Responsable" 
+                        name="group_responsable" 
+                        context="{'group_by':'activity_user_id'}"/>
+                <filter string="Échéance" 
+                        name="group_date" 
+                        context="{'group_by':'date_deadline'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+    <!-- LISTE ALERTES -->
+    <record id="view_vehicule_alerts_tree" model="ir.ui.view">
+        <field name="name">logifleet.alert.list</field>
+        <field name="model">logifleet.alert</field>
+        <field name="arch" type="xml">
+            <list string="Alertes Véhicule">
+				  <field name="activity_ids" widget="list_activity"/> 
+                <field name="vehicule_id"/>
+                <field name="type"/>
+                <field name="date_deadline" string="Échéance"/>
+                <field name="state"/>
+                <field name="activity_user_id"/>
+                <field name="activity_state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORMULAIRE ALERTES -->
+    <record id="view_vehicule_alerts_form" model="ir.ui.view">
+        <field name="name">logifleet.alert.form</field>
+        <field name="model">logifleet.alert</field>
+        <field name="arch" type="xml">
+            <form string="Alerte Véhicule">
+                <sheet>
+                    <group>
+                        <field name="vehicule_id"/>
+                        <field name="type"/>
+                        <field name="next_date"/>
+                        <field name="state"/>
+                    </group>
+                    <group>
+                        <button name="action_open_form" type="object" string="Traiter" class="btn-primary"/>
+                        <button string="Fermer" class="btn-secondary" special="cancel"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION UNIQUE ALERTES -->
+    <record id="action_vehicule_alerts" model="ir.actions.act_window">
+        <field name="name">Alertes Véhicule</field>
+        <field name="res_model">logifleet.alert</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="logifleet_alert_search"/>
+        <field name="view_id" ref="view_vehicule_alerts_tree"/>
+    </record>
+
+</odoo>
+
